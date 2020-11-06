@@ -13,13 +13,14 @@
                 <!-- Nav items -->
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ url('/dashboard') }}">
+                        <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}"
+                            href="{{ url('/dashboard') }}">
                             <i class="ni ni-tv-2 text-primary"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/books') }}">
+                        <a class="nav-link {{ Request::is('books') ? 'active' : '' }}" href="{{ url('/books') }}">
                             <i class="ni ni-book-bookmark text-primary"></i>
                             <span class="nav-link-text">Books</span>
                         </a>

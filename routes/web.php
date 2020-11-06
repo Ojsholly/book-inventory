@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Book\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function() {
+
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+
+    Route::resource('/books', BookController::class);
+
+});
