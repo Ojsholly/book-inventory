@@ -63,6 +63,11 @@ php artisan key:generate
 php artisan migrate
 ```
 
+### Create the Storage Symlink
+
+```bash
+php artisan storage:link
+```
 ### License
 
 [MIT](https://choosealicense.com/licenses/mit/)
