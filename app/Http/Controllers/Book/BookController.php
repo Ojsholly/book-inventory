@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateBookRequest;
 
 class BookController extends Controller
 {
@@ -112,6 +113,15 @@ class BookController extends Controller
     public function edit($id)
     {
         //
+
+        $book = Book::findByUUid($id);
+
+        if ($book == null) {
+            # code...
+            abort(404);
+        }
+
+        return view('books.edit', ['book' => $book]);
     }
 
     /**
@@ -121,9 +131,68 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBookRequest $request, $id)
     {
         //
+        $book = Book::findByUUID($id);
+
+        $author = $request->author;
+        $title = $request->title;
+        $description = $request->description;
+        $publisher = $request->publisher;
+        $date_published = $request->date_published;
+
+        if ($request->front_cover != null) {
+            # code...
+
+            Storage::delete($book->front_cover);
+            $cover_extension = $request->file('front_cover')->extension();
+            $front_cover = $request->file('front_cover')->storeAs('covers', uniqid().'.'.$cover_extension, 'public');
+
+        } else {
+            # code...
+
+            $front_cover = $book->front_cover;
+        }
+
+        if ($request->file != null) {
+            # code...
+
+            Storage::delete($book->path);
+            $file_extension = $request->file('file')->extension();
+            $path = $request->file('file')->storeAs('books', uniqid().".".$file_extension, 'public');
+
+        } else {
+
+            $path = $book->path;
+
+        }
+
+        $update_book = $book->update([
+            'title' => $title,
+            'author' => $author,
+            'description' => $description,
+            'publisher' => $publisher,
+            'date_published' => $date_published,
+            'path' => $path,
+            'front_cover' => $front_cover
+        ]);
+
+        if ($update_book == false) {
+            # code...
+            $response = [
+                'status' => '0',
+                'msg' => 'Error updating book information in the inventory'
+            ];
+
+            return response()->json($response, 200);
+        }
+
+        $response = [
+            'status' => '1'
+        ];
+
+        return response()->json($response, 200);
     }
 
     public function archives()
