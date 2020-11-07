@@ -36,4 +36,13 @@ class Book extends Model
         return Storage::url($this->front_cover);
     }
 
+    public function file_path()
+    {
+        return Storage::url($this->path);
+    }
+    public function download_link()
+    {
+        return Storage::download($this->path);
+    }
+
 }

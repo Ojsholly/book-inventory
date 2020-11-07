@@ -26,7 +26,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Books</h5>
-                                    <span class="h2 font-weight-bold mb-0">350,897</span>
+                                    <span class="h2 font-weight-bold mb-0">{{ $book_count }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-gradient-black text-dark rounded-circle shadow">
@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col">
                                     <h5 class="card-title text-uppercase text-muted mb-0">Archived Books</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    <span class="h2 font-weight-bold mb-0">{{ $archived_books_count }}</span>
                                 </div>
                                 <div class="col-auto">
                                     <div class="icon icon-shape bg-gradient-black text-dark rounded-circle shadow">

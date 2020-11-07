@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title', 'Books')
+@section('title', ' Archives')
 
 @section('content')
 
@@ -14,7 +14,7 @@
             <div class="card">
                 <!-- Card header -->
                 <div class="card-header border-0">
-                    <h3 class="mb-0">Books</h3>
+                    <h3 class="mb-0">Archived Books</h3>
                     <div class="col-md-3 float-right">
                         <a href="{{ url('books/archive') }}" class="btn btn-warning btn-md float-right">Archived
                             Books</a>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 @if($books->isEmpty())
-                <p class="text-center text-primary">No Book Uploaded yet.</p>
+                <p class="text-center text-primary">No Book Archived yet.</p>
                 @else
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush">
@@ -38,6 +38,7 @@
                                 <th scope="col">Date Published</th>
                                 <th scope="col">Date Created</th>
                                 <th scope="col">Last Update</th>
+                                <th scope="col">Date Archived</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -58,6 +59,7 @@
                                 <td> {{ date('l jS F Y', strtotime($book->date_published)) }} </td>
                                 <td>{{ $book->created_at->diffForHumans() }}</td>
                                 <td>{{ $book->updated_at->diffForHumans() }}</td>
+                                <td>{{ $book->deleted_at->diffForHumans() }}</td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
@@ -65,14 +67,9 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item" href="{{ url('books/'.$book->uuid) }}"><i
-                                                    class="ni ni-book-bookmark text-primary"></i>View Book</a>
-                                            <a class="dropdown-item" href="{{ url('books/'.$book->uuid.'/edit') }}"><i
-                                                    class="ni ni-settings text-primary"></i>Edit
-                                                Book</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal"
-                                                data-target="#archive-{{ $book->uuid }}"><i
-                                                    class="ni ni-archive-2 text-primary"></i>Archive Book</a>
+                                                data-target="#restore-{{ $book->uuid }}"><i
+                                                    class="ni ni-archive-2 text-primary"></i>Restore Book</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal"
                                                 data-target="#delete-{{ $book->uuid }}"><i
                                                     class="ni ni-basket text-primary"></i>Delete Book</a>
@@ -80,17 +77,17 @@
                                     </div>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="archive-{{ $book->uuid }}" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="restore-{{ $book->uuid }}" tabindex="-1" role="dialog"
                                 aria-labelledby="modal-form" aria-hidden="true">
                                 <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
                                     <div class="modal-content">
                                         <div class="modal-body p-0">
                                             <div class="card bg-secondary border-0 mb-0">
                                                 <div class="card-header bg-transparent pb-5">
-                                                    <h3 class="text-center">Confirm Book Archive</h3>
+                                                    <h3 class="text-center">Confirm Book Restore</h3>
                                                 </div>
                                                 <div class="card-body px-lg-5 py-lg-5">
-                                                    <form role="form" action="{{ url('/books/archive/'.$book->uuid) }}"
+                                                    <form role="form" action="{{ url('/books/restore/'.$book->uuid) }}"
                                                         method="POST">
                                                         @csrf
                                                         <div class="form-group mb-3">
@@ -105,7 +102,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="text-center">
-                                                            <button type="submit" class="btn btn-primary my-4">Archive
+                                                            <button type="submit" class="btn btn-primary my-4">Restore
                                                                 Book</button>
                                                         </div>
                                                     </form>

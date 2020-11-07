@@ -6,6 +6,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -92,6 +93,14 @@ class BookController extends Controller
     public function show($id)
     {
         //
+        $book = Book::findByUUID($id);
+
+        if ($book == null) {
+            # code...
+            abort(404);
+        }
+
+        return view('books.show', ['book' => $book]);
     }
 
     /**
@@ -117,6 +126,46 @@ class BookController extends Controller
         //
     }
 
+    public function archives()
+    {
+        $books = Book::onlyTrashed()->get();
+
+        $count = $books->count();
+
+        return view('books.archives', ['books' => $books, 'count' => $count]);
+    }
+
+    public function archive($id)
+    {
+        $book = Book::findByUUID($id);
+
+        $book->delete();
+
+        if ($book->trashed()) {
+            # code...
+            return redirect()->back()->with('success', 'Book Successfully Archived');
+        }
+
+        return redirect()->back()->with('fail', 'Error Archiving Book.');
+
+    }
+
+
+    public function restore($id)
+    {
+        $book = Book::onlyTrashed()->where('uuid', $id)->first();
+
+        $book->restore();
+
+        if ($book->deleted_at == null) {
+            # code...
+            return redirect()->back()->with('success', 'Book Successfully Restored');
+        }
+
+        return redirect()->back()->with('fail', 'Error Restoring Book.');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -126,5 +175,18 @@ class BookController extends Controller
     public function destroy($id)
     {
         //
+        $book = Book::findByUUID($id);
+
+        $delete_files = Storage::delete([$book->path, $book->front_cover]);
+        $delete_book = $book->forceDelete();
+
+        $book = Book::where('uuid', $id)->first();
+
+        if ($book == null) {
+            # code...
+            return redirect()->back()->with('success', 'Book Successfully Deleted');
+        }
+
+        return redirect()->back()->with('fail', 'Error Deleting Book.');
     }
 }

@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function() {
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 
+    Route::get('/books/archive', [BookController::class, 'archives']);
+    Route::post('/books/archive/{id}', [BookController::class, 'archive'])->name('books.archive');
+    Route::post('/books/restore/{id}', [BookController::class, 'restore'])->name('books.restore');
     Route::resource('/books', BookController::class);
 
 });

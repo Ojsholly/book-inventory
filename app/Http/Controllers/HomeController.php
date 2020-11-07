@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $book_count = Book::all()->count();
+        $archived_books_count = Book::onlyTrashed()->count();
+        return view('dashboard', ['book_count' => $book_count, 'archived_books_count' => $archived_books_count]);
     }
 }
