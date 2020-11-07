@@ -6,61 +6,7 @@
 <!-- Page content -->
 <div class="container-fluid mt--6">
     <div class="row">
-        <div class="col-xl-4 order-xl-2">
-            <div class="card card-profile">
-                <img src="../assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder" class="card-img-top">
-                <div class="row justify-content-center">
-                    <div class="col-lg-3 order-lg-2">
-                        <div class="card-profile-image">
-                            <a href="#">
-                                <img src="../assets/img/theme/team-4.jpg" class="rounded-circle">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                    <div class="d-flex justify-content-between">
-                        <a href="#" class="btn btn-sm btn-info  mr-4 ">Connect</a>
-                        <a href="#" class="btn btn-sm btn-default float-right">Message</a>
-                    </div>
-                </div>
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div class="col">
-                            <div class="card-profile-stats d-flex justify-content-center">
-                                <div>
-                                    <span class="heading">22</span>
-                                    <span class="description">Friends</span>
-                                </div>
-                                <div>
-                                    <span class="heading">10</span>
-                                    <span class="description">Photos</span>
-                                </div>
-                                <div>
-                                    <span class="heading">89</span>
-                                    <span class="description">Comments</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <h5 class="h3">
-                            Jessica Jones<span class="font-weight-light">, 27</span>
-                        </h5>
-                        <div class="h5 font-weight-300">
-                            <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                        </div>
-                        <div class="h5 mt-4">
-                            <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                        </div>
-                        <div>
-                            <i class="ni education_hat mr-2"></i>University of Computer Science
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-8 order-xl-1">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row align-items-center">
@@ -127,13 +73,87 @@
                                     <a class="btn btn-primary btn-sm" href="{{ $book->file_path() }}">Preview Book</a>
                                 </div>
                                 <div class="col-md-3">
-                                    <a class="btn btn-default btn-sm" href="{{ $book->file_path() }}">Edit Book</a>
+                                    <a class="btn btn-default btn-sm"
+                                        href="{{ url('books/'.$book->uuid.'/edit') }}">Edit Book</a>
                                 </div>
                                 <div class="col-md-3">
-                                    <a class="btn btn-warning btn-sm" href="{{ $book->file_path() }}">Archive Book</a>
+                                    <a class="btn btn-warning btn-sm" href="#" data-toggle="modal"
+                                        data-target="#archive-{{ $book->uuid }}">Archive Book</a>
                                 </div>
                                 <div class="col-md-3">
-                                    <button class="btn btn-danger btn-sm">Delete Book</button>
+                                    <a class="btn btn-danger btn-sm" href="#" data-toggle="modal"
+                                        data-target="#delete-{{ $book->uuid }}">Delete Book</a>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="archive-{{ $book->uuid }}" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-form" aria-hidden="true">
+                                <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card bg-secondary border-0 mb-0">
+                                                <div class="card-header bg-transparent pb-5">
+                                                    <h3 class="text-center">Confirm Book Archive</h3>
+                                                </div>
+                                                <div class="card-body px-lg-5 py-lg-5">
+                                                    <form role="form" action="{{ url('/books/archive/'.$book->uuid) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <div class="form-group mb-3">
+                                                            <div
+                                                                class="input-group input-group-merge input-group-alternative">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="ni ni-email-83"></i></span>
+                                                                </div>
+                                                                <input class="form-control" placeholder="Book Title"
+                                                                    type="text" value="{{ $book->title }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn btn-primary my-4">Archive
+                                                                Book</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="delete-{{ $book->uuid }}" tabindex="-1" role="dialog"
+                                aria-labelledby="modal-form" aria-hidden="true">
+                                <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body p-0">
+                                            <div class="card bg-secondary border-0 mb-0">
+                                                <div class="card-header bg-transparent pb-5">
+                                                    <h3 class="text-center">Confirm Book Delete</h3>
+                                                </div>
+                                                <div class="card-body px-lg-5 py-lg-5">
+                                                    <form role="form" action="{{ url('/books/'.$book->uuid) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <div class="form-group mb-3">
+                                                            <div
+                                                                class="input-group input-group-merge input-group-alternative">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i
+                                                                            class="ni ni-email-83"></i></span>
+                                                                </div>
+                                                                <input class="form-control" placeholder="Book Title"
+                                                                    type="text" value="{{ $book->title }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn btn-primary my-4">Delete
+                                                                Book</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

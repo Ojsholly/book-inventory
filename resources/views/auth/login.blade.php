@@ -50,17 +50,7 @@
                 </div>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
-                            <span class="nav-link-inner--text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">
-                            <span class="nav-link-inner--text">Login</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="register.html" class="nav-link">
+                        <a href="{{ url('/register') }}" class="nav-link">
                             <span class="nav-link-inner--text">Register</span>
                         </a>
                     </li>
@@ -115,11 +105,6 @@
             <div class="container">
                 <div class="header-body text-center mb-7">
                     <div class="row justify-content-center">
-                        <div class="col-xl-5 col-lg-6 col-md-8 px-5">
-                            <h1 class="text-white">Welcome!</h1>
-                            <p class="text-lead text-white">Use these awesome forms to login or create new account in
-                                your project for free.</p>
-                        </div>
                     </div>
                 </div>
             </div>
